@@ -35,7 +35,7 @@ index 9855e21..0940fb8 100644
 +
 +};
 diff --git a/config.mk b/config.mk
-index 74429ae..30d6f8d 100644
+index 74429ae..08356e8 100644
 --- a/config.mk
 +++ b/config.mk
 @@ -10,12 +10,20 @@ MANPREFIX = ${PREFIX}/share/man
@@ -47,7 +47,7 @@ index 74429ae..30d6f8d 100644
 +XINERAMAFLAGS = -DXINERAMA
 +
 +# freetype
-+FREETYPELIBS = -lfontconfig -lXft
++FREETYPELIBS = -lXft
 +FREETYPEINC = /usr/include/freetype2
 +
  # includes and libs
@@ -63,7 +63,7 @@ index 74429ae..30d6f8d 100644
  LDFLAGS = -s ${LIBS}
  COMPATSRC = explicit_bzero.c
 diff --git a/slock.c b/slock.c
-index 5ae738c..1ab5ee5 100644
+index 5ae738c..3ea9b7f 100644
 --- a/slock.c
 +++ b/slock.c
 @@ -1,5 +1,6 @@
@@ -231,16 +231,16 @@ index 5ae738c..1ab5ee5 100644
  			return lock;
  		}
  
-@@ -390,6 +450,12 @@ main(int argc, char **argv) {
- 
+@@ -391,5 +451,12 @@ main(int argc, char **argv) {
  	/* everything is now blank. Wait for the correct password */
  	readpw(dpy, &rr, locks, nscreens, hash);
+
 +	for (nlocks = 0, s = 0; s < nscreens; s++) {
 +		XFreePixmap(dpy, locks[s]->drawable);
 +		XFreeGC(dpy, locks[s]->gc);
 +	}
++
 +	XSync(dpy, 0);
 +	XCloseDisplay(dpy);
- 
  	return 0;
  }
